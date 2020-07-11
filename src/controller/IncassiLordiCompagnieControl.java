@@ -12,8 +12,6 @@ import org.bson.Document;
 import com.google.gson.Gson;
 
 import model.Movies;
-import model.Movies2;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

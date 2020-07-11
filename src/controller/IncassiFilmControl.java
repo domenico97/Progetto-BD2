@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bson.Document;
 
+import com.google.gson.Gson;
+
 import model.Movies;
+import model.Movies2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,14 +21,14 @@ import java.util.Iterator;
 /**
  * Servlet implementation class IncassiFIlm
  */
-@WebServlet("/IncassiFilm")
-public class IncassiFilm extends HttpServlet {
+@WebServlet("/IncassiFilmControl")
+public class IncassiFilmControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Movies prova;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IncassiFilm() {
+    public IncassiFilmControl() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,18 +48,18 @@ public class IncassiFilm extends HttpServlet {
 			System.out.println("Dimensione result" + result.size());
 			
 
-			String json = null;
-			if ((result.size()) != 0) {
-				json = "[";
-				for (Document x : result) {
-					json += "{\"titolo\":" + "\"" + x.get("title") + "\"" + ",\"incasso\":" + "\"" + x.get("worldwide_gross_income") + "\""
-							+ "},";
-				}
-				json = json.substring(0, json.length() - 1);
-				json += "]";
-
-			}
-
+//			String json = null;
+//			if ((result.size()) != 0) {
+//				json = "[";
+//				for (Document x : result) {
+//					json += "{\"titolo\":" + "\"" + x.get("title") + "\"" + ",\"incasso\":" + "\"" + x.get("worldwide_gross_income") + "\""
+//							+ "},";
+//				}
+//				json = json.substring(0, json.length() - 1);
+//				json += "]";
+//
+//			}
+			String json = new Gson().toJson(result);
 			response.getWriter().print(json);
 		
 	}

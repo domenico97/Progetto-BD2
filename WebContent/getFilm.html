@@ -377,7 +377,7 @@ html, body {
 								
 								var r = /\$\s\d+/g;
 								var budget = 0;
-								if(typeof x.budget !== 'undefined'){
+								if(x.budget){
 									if(x.budget.match(r)){
 										var a = x.budget.match(r);
 										var b = a[0].substring(2,);
@@ -390,7 +390,7 @@ html, body {
 								else
 									budget= "Unknown";
 									
-									if(typeof x.worlwide_gross_income !== 'undefined'){
+									if(x.worlwide_gross_income){
 										if(x.worlwide_gross_income.match(r))
 											income = formatter.format(x.worlwide_gross_income.match(r)[0].substring(2,));
 										else

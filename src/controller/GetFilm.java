@@ -58,6 +58,7 @@ public class GetFilm extends HttpServlet {
 
 		}
 	*/
+		System.out.println(result);
 		
 		String json = new Gson().toJson(result);
 		

@@ -5,7 +5,7 @@
 	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Light Bootstrap Dashboard by Creative Tim</title>
+	<title>Incassi per genere</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -47,7 +47,7 @@
 
 		<div class="sidebar-wrapper">
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
+				<a  class="simple-text">
 					Università degli Studi di Salerno </a>
 			</div>
 
@@ -72,7 +72,7 @@
 							<p>Media generi per attore</p>
 					</a></li>
 					<li><a href="incassidirector.html"> <i class="pe-7s-bell"></i>
-							<p>Incassi direttore</p>
+							<p>Incassi regista</p>
 					</a></li>
 					<li><a href="incassigeneri.html"> <i class="pe-7s-bell"></i>
 							<p>Incassi generi</p>
@@ -126,7 +126,7 @@
 								
 							</div>
 							<div class="content">
-								<canvas id="myChart" width="400" height="400"></canvas>
+								<canvas id="chartCanvas" width="400" height="400"></canvas>
 
 							</div>
                         </div>
@@ -157,8 +157,7 @@
     <!--  Notifications Plugin    -->
     <script src="assets/js/bootstrap-notify.js"></script>
 
-    <!--  Google Maps Plugin    -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  
 
     <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 	<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
@@ -173,8 +172,12 @@
 	<script type="text/javascript">
 	$(document).ready(
 			function() {
-				 
+				var canvas = document.getElementById('chartCanvas');
+			    var context = canvas.getContext('2d');	 
+			    $("#inputFrom").val("1900");
+			    $("#inputTo").val("2020");
 			$("#sub").click(function() {
+				$("#example-table").html("");
 				var from = $("#inputFrom").val();
 				var to = $("#inputTo").val();
 				var result = null;
@@ -230,7 +233,8 @@
 						for(var i=0; i < count; i++)
 						{
 							result_labels.push(data[i].genere);
-							result_values.push(data[i].mediaIncasso);
+							result_values.push((Math.round(data[i].mediaIncasso * 100) / 100).toFixed(2));
+						
 						}
 						result = data
 						
@@ -239,9 +243,12 @@
 					}
 				});
 				
+				if (typeof myChart !== 'undefined') {
+					
+					myChart.destroy();
+				}
 				
-				var ctx = document.getElementById('myChart').getContext('2d');
-				var myChart = new Chart(ctx, {
+				 myChart = new Chart(context, {
 					type : 'bar',
 					data : {
 						labels : result_labels,
@@ -275,18 +282,7 @@
 				});
 			});
 
-				/*$(document).ready(function(){
-
-					demo.initChartist();
-
-					$.notify({
-				    	icon: 'assets/img/unisa.png',
-				    	message: "Questo progetto è stato sviluppato nell'ambito del corso di Basi di dati 2."
-
-				    },{
-				        type: 'info',
-				        timer: 4000
-				    });*/
+			$("#sub").click();
 
 			});
 </script>

@@ -12,7 +12,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-
+import com.mongodb.client.model.Indexes;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoClientOptions;
 import java.net.UnknownHostException;
@@ -36,7 +36,9 @@ public class Movies {
 	private static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017/"));
 	private static MongoDatabase database = mongoClient.getDatabase("BD2");
 	private static MongoCollection<Document> collection = database.getCollection("Movies");
-
+	private static String indexDirector = collection.createIndex(Indexes.hashed("director"));
+	
+	
 	// Restituisce una lista di film con i relativi incassi
 	public static ArrayList<Document> getWorldWideGrossIncome(String from, String to) {
 
@@ -66,7 +68,6 @@ public class Movies {
 		ArrayList<Document> result = collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 
 		return result;
-
 	}
 
 	// Restituice il totale incassi di ciascuna compagnia cinematografica

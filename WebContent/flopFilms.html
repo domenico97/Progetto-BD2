@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>Get Film Query</title>
+<meta
+	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+	name='viewport' />
+<meta name="viewport" content="width=device-width" />
+<!-- Bootstrap core CSS     -->
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Animation library for notifications   -->
+<link href="assets/css/animate.min.css" rel="stylesheet" />
+<!--  Light Bootstrap Table core CSS    -->
+<link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0"
+	rel="stylesheet" />
+<!--  CSS for Demo Purpose, don't include it in your project     -->
+<link href="assets/css/demo.css" rel="stylesheet" />
+<!--     Fonts and icons     -->
+<link
+	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+	rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300'
+	rel='stylesheet' type='text/css'>
+<link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+</head>
+<body>
+		<div class="main-panel">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<!--  INSERT QUERY -->
+						<div class="col-12">
+							<div class="card">
+								<div class="header" style="padding: 15px;">
+									<h4 class="title">Inserisci Soglia</h4>
+									<p class="category" id="range"></p>
+									<div class="row, form-inline" style="display: flex;">
+										<div style="flex: 80%;">
+											<input type="number" class="form-control" required
+												id="inputMinLoss" placeholder="Inserisci la perdita minima">
+											<button type="button" class="form-control" id="sub">Submit</button>
+										</div>
+										<div style="flex: 51%;">
+											Numero Risultati: <span id="numFilm"></span>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<canvas id="chartCanvas" width="400"></canvas>
+								</div>
+								<div class="content table-responsive table-full-width" style="margin: 20px;">
+									<table class="table table-hover table-striped">
+										<thead>
+										<tr>
+											<th>Titolo</th>
+											<th>Perdita</th>
+										</tr>
+										</thead>
+										<tbody id="tableBody">
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+<!--   Core JS Files   -->
+<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<!--  Charts Plugin -->
+<script src="assets/js/chartist.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="assets/js/bootstrap-notify.js"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+<script src="assets/js/demo.js"></script>
+<script src="assets/js/Chart.bundle.js"></script>
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+				var formatter = new Intl.NumberFormat('en-US', {
+					  style: 'currency',
+					  currency: 'USD',
+					});
+			
+				$("#inputMinLoss").val("95000000");
+				var canvas = document.getElementById('chartCanvas');
+			    var context = canvas.getContext('2d');
+				$("#sub").click(
+						function() {
+							var minLoss = $("#inputMinLoss").val();
+							var result = null
+							$.ajax({
+								type : "GET", //Request type
+								url : 'FlopFilms',
+								dataType : 'json',
+								data : {
+									MinLoss : minLoss,
+								},
+								cache : false,
+								async : false,
+								error : function(xhr, status, error) {
+									alert(status);
+									alert(xhr.responseText);
+								},
+								success : function(data) {
+									result = data;
+									console.log(result);
+									return result;
+								}
+							});
+							$("#tableBody").html('');
+							var numResults = result.length;
+							$("#numFilm").text(numResults>30 ? ">30" : numResults );
+							var lab = [];
+							var data = [];
+							for(x of result){
+								$("#tableBody").append('<tr>'
+										+'<td>'+x.title+'</td>'
+										+'<td>'+formatter.format(x.loss)+'</td>'
+										+'</tr>');
+							
+								lab.push(x.title);
+								data.push(x.loss);
+							}
+							//console.log(lab);
+							//console.log(data);
+							//console.log(context);
+							if (typeof myChart !== 'undefined') {
+								console.log(myChart);
+								//context.clearRect(0, 0, canvas.width, canvas.height);
+								//console.log(context);
+								myChart.destroy();
+							}
+							/* context = document.getElementById('myChart').getContext('2d'); */
+							 myChart = new Chart(context, {
+								type : 'bar',
+								data : {
+									labels :  lab.slice(0,5) ,
+									datasets : [ {
+										label : 'Perdite in dollari $',
+										data :  data.slice(0,5) ,
+										backgroundColor : [
+												'rgba(255, 99, 132, 0.2)',
+												'rgba(54, 162, 235, 0.2)',
+												'rgba(255, 206, 86, 0.2)',
+												'rgba(75, 192, 192, 0.2)',
+												'rgba(153, 102, 255, 0.2)',
+												'rgba(255, 159, 64, 0.2)' ],
+										borderColor : [
+												'rgba(255, 99, 132, 1)',
+												'rgba(54, 162, 235, 1)',
+												'rgba(255, 206, 86, 1)',
+												'rgba(75, 192, 192, 1)',
+												'rgba(153, 102, 255, 1)',
+												'rgba(255, 159, 64, 1)' ],
+										borderWidth : 1
+									} ]
+								},
+								options : {
+									scales : {
+										yAxes : [ {
+											ticks : {
+												beginAtZero : true
+											}
+										} ]
+									}
+								}
+							});
+							//context.clearRect(0, 0, canvas.width, canvas.height);
+						});
+				/*$(document).ready(function(){
+					demo.initChartist();
+					$.notify({
+				    	icon: 'assets/img/unisa.png',
+				    	message: "Questo progetto è stato sviluppato nell'ambito del corso di Basi di dati 2."
+				    },{
+				        type: 'info',
+				        timer: 4000
+				    });*/
+				    $("#sub").click();
+			});
+</script>
+</html>

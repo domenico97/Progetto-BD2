@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<title>Numero film per genere</title>
+
+<meta
+	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+	name='viewport' />
+<meta name="viewport" content="width=device-width" />
+
+
+<!-- Bootstrap core CSS     -->
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Animation library for notifications   -->
+<link href="assets/css/animate.min.css" rel="stylesheet" />
+
+<!--  Light Bootstrap Table core CSS    -->
+<link href="assets/css/light-bootstrap-dashboard.css?v=1.4.0"
+	rel="stylesheet" />
+
+
+<link href="assets/css/bootstrap-table.min.css" rel="stylesheet" />
+<link href="assets/css/fresh-bootstrap-table.css" rel="stylesheet" />
+
+<!--     Fonts and icons     -->
+
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300'
+	rel='stylesheet' type='text/css'>
+
+
+</head>
+<body>
+
+		<div class="sidebar" data-color="grey"
+			data-image="assets/img/sidebar-5.jpg">
+
+			<!--
+
+        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+        Tip 2: you can also add an image using data-image tag
+
+    -->
+
+			<div class="sidebar-wrapper">
+				<div class="logo">
+					<a href="http://www.creative-tim.com" class="simple-text">
+						Università degli Studi di Salerno </a>
+				</div>
+
+				<ul class="nav">
+					<li class="active"><a href="getFilm.html"> <i
+							class="pe-7s-graph"></i>
+							<p>Cerca Film</p>
+					</a></li>
+					<li><a href="user.html"> <i class="pe-7s-user"></i>
+							<p>User Profile</p>
+					</a></li>
+					<li><a href="table.html"> <i class="pe-7s-note2"></i>
+							<p>Table List</p>
+					</a></li>
+					<li><a href="typography.html"> <i class="pe-7s-news-paper"></i>
+							<p>Typography</p>
+					</a></li>
+					<li><a href="icons.html"> <i class="pe-7s-science"></i>
+							<p>Icons</p>
+					</a></li>
+					<li><a href="maps.html"> <i class="pe-7s-map-marker"></i>
+							<p>Maps</p>
+					</a></li>
+					<li><a href="notifications.html"> <i class="pe-7s-bell"></i>
+							<p>Notifications</p>
+					</a></li>
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="main-panel">
+			<nav class="navbar navbar-default navbar-fixed">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target="#navigation-example-2">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Progetto Basi di Dati 2</a>
+					</div>
+					
+				</div>
+			</nav>
+
+
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="">
+						
+						</div>
+
+						<div class="">
+							<div class="card">
+								<div class="header">
+								<h4 class="title">Numero di film per genere</h4>
+								<p class="category" id="range"></p>
+								<div class="row, form-inline">
+
+										<div style="margin-top: 30px;">
+											<input type="text"
+												placeholder="Da" id="inputFrom" class="form-control" required />
+											
+											<input type="text" class="form-control"
+												placeholder="A" id="inputTo" required />
+												
+												<div style="margin-top: 30px;">
+												Risultati da visualizzare: <input type="number" id="qty"
+													min="1" max="100" placeholder=20>
+												
+												<button type="button" class=" btn btn-outline-success" onclick="showQuery()"
+													style="margin-left: 30px;" id="sub">Submit</button>
+											
+										</div>
+
+
+
+									</div>
+								
+							</div>
+							
+						       <!-- Istogramma  -->
+								<canvas id="chartCanvas" width="600" max-height="700"></canvas>
+
+						
+						</div>
+						
+					</div>
+				</div>
+
+
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card ">
+							<div class="header">
+								<h4 class="title">Generi con più film in %</h4>
+								<p class="category" id = "date"></p>
+							</div>
+							<div class="content">
+								 <!-- Doughnut Chart  -->
+								<canvas id="chartDoughnut" width="600" max-height="700"></canvas>
+
+							</div>
+							<div class="footer">
+									<hr>
+									<p id = "footer_text" class="category" style="padding: 4.5%;"></p>
+									</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="card ">
+							<div class="header">
+								<h4 class="title">Riepilogo</h4>
+								<p class="category">Numero di film per ciascuna categoria dal 1900 al 2020</p>
+							</div>
+							<div class="content">
+									<!-- Tabella -->
+									<div class="fresh-table toolbar-color-blue">
+										<div class="toolbar">
+											
+										</div>
+										<table id="fresh-table" class="table">
+											<thead>
+
+												<th data-field="name" data-sortable="true">Genere
+													</th>
+												<th data-field="income" data-sortable="true">Numero di film</th>
+											</thead>
+											<tbody id="wrapper">
+
+											</tbody>
+										</table>
+									</div>
+
+								<div class="footer">
+									<hr>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<footer class="footer">
+			<div class="container-fluid">
+				<nav class="pull-left">
+					<ul>
+						<li><a href="#"> Home </a></li>
+
+
+
+					</ul>
+				</nav>
+				<p class="copyright pull-right">
+					<script>
+						document.write(new Date().getFullYear())
+					</script>
+					<a href="http://www.unisa.it">UNISA</a>
+				</p>
+			</div>
+		</footer>
+
+	</div>
+	</div>
+</body>
+
+<!--   Core JS Files   -->
+<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap-table.min.js"></script>
+
+
+
+<!--  Notifications Plugin    -->
+<script src="assets/js/bootstrap-notify.js"></script>
+
+
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+<script src="assets/js/demo.js"></script>
+
+<script src="assets/js/Chart.bundle.js"></script>
+
+<script type="text/javascript">
+window.onload = function() {
+	 showQuery()
+	 createTable(result)
+	};
+
+var result = null
+
+function showQuery() {
+	var canvas = document.getElementById('chartCanvas');
+	var context = canvas.getContext('2d');
+	var qty = $("#qty").val();
+	if (qty === null || qty === "") {
+		qty = 20
+	}
+	var from = $("#inputFrom").val();
+	var to = $("#inputTo").val();
+	
+	if(from == ''){
+		from = "1900"
+	}
+	if(to == ''){
+		to = "2020"
+	}
+
+	
+	var result_label = []
+	var result_value = []
+	var size = 0
+
+	$
+			.ajax({
+				type : "GET", //Request type
+				url : 'FilmPerGenereControl',
+				dataType : 'json',
+				data : {
+					From : from,
+					To : to
+				},
+				cache : false,
+				async : false,
+				error : function(xhr,
+						status, error) {
+					alert(status);
+					alert(xhr.responseText);
+				},
+				success : function(data) {
+					var count = Object.keys(data).length;
+					
+					if(count >= qty){
+						size = qty;
+					}else{
+						size = count;
+					}
+					for (i = 0; i < size; i++) {
+						result_label
+								.push(data[i].genre);
+						result_value
+								.push(data[i].total_qty);
+
+					}
+					result = data
+					return data;
+				}
+			});
+
+	if (typeof myChart !== 'undefined') {
+		myChart.destroy();
+	}
+	myChart = new Chart(
+			context,
+			{
+				type : 'bar',
+				data : {
+					labels : result_label,
+					datasets : [ {
+						label : 'Numero di film ',
+						data : result_value,
+						backgroundColor : [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)'
+								 ],
+						borderColor : [
+								'rgba(255, 99, 132, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)'
+								 ],
+						borderWidth : 1
+					} ]
+				},
+				options : {
+					scales : {
+						yAxes : [ {
+							ticks : {
+								beginAtZero : true
+							}
+						} ]
+					}
+				}
+			});
+	
+	
+	document.getElementById('date').innerHTML = "Dal " + from + " al " + to;
+	document.getElementById('footer_text').innerHTML = "Il genere per la quale sono stati prodotti più film nel periodo che va dal " + from + " al " + to + " è: " + result_label[0];
+	
+	//Calcolo le percentuali per i 5 generi con più film
+	
+	if (result_label.length >= 5){
+		size = 5;
+	}else{
+		size = result_label.length;
+	}
+	result_label = []
+	result_value = []
+	var somma = 0
+	for (i = 0; i < size; i++) {
+		result_label
+				.push(result[i].genre + " %");
+		somma += result[i].total_qty;
+	}
+	
+	for (i = 0; i < size; i++) {
+		var num = (result[i].total_qty / somma)*100;
+		num = num.toFixed(2);
+		result_value.push(num);
+	}
+	
+	
+	
+	var canvas = document.getElementById('chartDoughnut');
+	var context = canvas.getContext('2d');
+	if (typeof myDoughnutChart !== 'undefined') {
+		myDoughnutChart.destroy();
+	}
+	 myDoughnutChart = new Chart(context, {
+	    type: 'doughnut',
+	    data : {
+			labels : result_label,
+			datasets : [ {
+				label : 'Numeri di film',
+				data : result_value,
+				backgroundColor : [
+						'rgba(255, 99, 132, 0.2)',
+						'rgba(54, 162, 235, 0.2)',
+						'rgba(255, 206, 86, 0.2)',
+						'rgba(153, 102, 255, 0.2)',
+						'rgba(255, 159, 64, 0.2)'
+						 ],
+				borderColor : [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+						 ],
+				borderWidth : 1
+			} ]
+		},
+		options : {
+			 responsive: true
+			
+		}
+	});
+	
+	
+
+		    
+	}
+	
+function createTable(result){
+	//Creo tabella 
+	//Prendo il riferimento al wrapper delle righe
+	
+	var wrap = document
+			.getElementById('wrapper');
+
+	//per ogni attività nella lista creo una riga
+	for ( var j in result) {
+		var genere = result[j].genre;
+		var total = result[j].total_qty;
+		//console.log(company_name);
+		wrap.innerHTML += '<tr>'
+				+ '<td>' + genere
+				+ '</td>' + '<td>'
+				+ total + '</td>'
+				+ '</tr>';
+	}
+	
+	
+	 var $table = $('#fresh-table')
+
+	   
+		     $table.bootstrapTable('destroy').bootstrapTable({
+		        classes: 'table table-hover table-striped',
+		        toolbar: '.toolbar',
+		       
+
+		        search: true,
+		        showRefresh: false,
+		        showToggle: false,
+		        showColumns: false,
+		        pagination: true,
+		        striped: true,
+		        sortable: true,												 
+		        pageSize: 4,
+		        pageList: [4, 10, 26],
+
+		        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+		          return ''
+		        },
+		        formatRecordsPerPage: function (pageNumber) {
+		          return pageNumber + ' rows visible'
+		        }
+		      })
+}
+	
+
+	
+</script>
+
+</html>

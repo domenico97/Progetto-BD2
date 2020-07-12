@@ -22,7 +22,7 @@ import java.util.Iterator;
 @WebServlet("/IncassiFilmControl")
 public class IncassiFilmControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static Movies prova;
+	static Movies movies;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -42,21 +42,9 @@ public class IncassiFilmControl extends HttpServlet {
 		System.out.println(from + " " + to);
 		
 			// Richiamo il metodo del model per eseguire la query
-			ArrayList<Document> result = prova.getWorldWideGrossIncome(from, to);
+			ArrayList<Document> result = movies.getWorldWideGrossIncome(from, to);
 			System.out.println("Dimensione result" + result.size());
 			
-
-//			String json = null;
-//			if ((result.size()) != 0) {
-//				json = "[";
-//				for (Document x : result) {
-//					json += "{\"titolo\":" + "\"" + x.get("title") + "\"" + ",\"incasso\":" + "\"" + x.get("worldwide_gross_income") + "\""
-//							+ "},";
-//				}
-//				json = json.substring(0, json.length() - 1);
-//				json += "]";
-//
-//			}
 			String json = new Gson().toJson(result);
 			response.getWriter().print(json);
 		

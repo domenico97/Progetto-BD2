@@ -279,4 +279,25 @@ public class Movies {
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}
 
+public static ArrayList<Document> genreDistributionForYear(String from, String to) {
+	List<? extends Bson> pipeline = Arrays.asList(
+			new Document().append("$match",
+					new Document().append("$and",
+							Arrays.asList(new Document().append("year", new Document().append("$gte", from)),
+									new Document().append("year", new Document().append("$lte", to))))),
+			new Document().append("$addFields", new Document().append("qty", 1.0)),
+			new Document().append("$project",
+					new Document().append("categoria", new Document().append("$split", Arrays.asList("$genre", ", ")))
+							.append("year", 1.0).append("qty", 1.0)),
+			new Document().append("$unwind", "$categoria"),
+			new Document().append("$group",
+					new Document().append("_id", new Document().append("anno", "$year").append("genere", "$categoria"))
+							.append("total_qty", new Document().append("$sum", "$qty"))),
+			new Document().append("$project",
+					new Document().append("anno", "$_id.anno").append("genere", "$_id.genere").append("_id", 0.0)
+							.append("total_qty", 1.0)),
+			new Document().append("$sort", new Document().append("anno", 1.0).append("total_qty", -1.0)));
+	return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
+}
+
 }

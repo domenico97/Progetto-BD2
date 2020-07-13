@@ -258,6 +258,12 @@ function showQuery() {
 	var result_comedy = []
 	var result_romance = []
 	var size = 0
+	var qty_drama = 0
+	var qty_comedy = 0
+	var qty_romance = 0
+	var founded_drama = false
+	var founded_romance = false
+	var founded_comedy = false
 
 
 	$
@@ -283,14 +289,102 @@ function showQuery() {
 						if(result_label.indexOf(data[i].anno)=== -1){
 							result_label.push(data[i].anno);
 						}
-						
+				/*	
 				for (y of result_label){
+					founded_drama = false;
+					founded_comedy = false;
+					founded_romance = false;
+					
+					qty_drama = 0
+					qty_comedy = 0
+					qty_romance = 0
+					
 					for(x of data){
 						if(x.anno.localCompare(y)) 
-						
+						{
+							if(x.genere.localCompare("Drama"))
+							{
+								founded_drama = true;
+								qty_drama = x.total_qty;	
+							}
+							
+							if(x.genere.localCompare("Romance"))
+							{
+								founded_romance = true;
+								qty_romance = x.total_qty;	
+							}
+							
+							if(x.genere.localCompare("Comedy"))
+							{
+								founded_comedy = true;
+								qty_comedy = x.total_qty;	
+							}
+							
+						}
 					}
+					if(founded_drama)
+						result_drama.push(qty_drama);
+					else
+						result_drama.push(0);
+					
+					if(founded_romance)
+						result_romance.push(qty_romance);
+					else
+						result_romance.push(0);
+					
+					if(founded_comedy)
+						result_comedy.push(qty_comedy);
+					else
+						result_comedy.push(0);
+					
 				}
+					*/	
+				for(i=0; i<count; i++)
+				{
+					founded_drama = false
+					founded_romance = false
+					founded_comedy = false
+					
+					qty_drama = 0
+					qty_comedy = 0
+					qty_romance = 0
+					
+					for(y of data[i].film)
+					{
+						if(y.genere.localCompare("Drama"))
+						{
+							founded_drama = true;
+							qty_drama = y.quantita;
+						}
 						
+						if(y.genere.localCompare("Comedy"))
+						{
+							founded_comedy = true;
+							qty_comedy = y.quantita;
+						}
+						
+						if(y.genere.localCompare("Romance"))
+						{
+							founded_romance = true;
+							qty_romance = y.quantita;
+						}
+					}
+					
+					if(founded_drama)
+						result_drama.push(qty_drama);
+					else
+						result_drama.push(0);
+					
+					if(founded_romance)
+						result_romance.push(qty_romance);
+					else
+						result_romance.push(0);
+					
+					if(founded_comedy)
+						result_comedy.push(qty_comedy);
+					else
+						result_comedy.push(0);
+				}
 			}
 					
 				
@@ -307,22 +401,22 @@ function showQuery() {
 	myChart = new Chart(document.getElementById("bar-chart-grouped"), {
 	    type: 'bar',
 	    data: {
-	      labels: ["1900", "1950", "1999", "2050"],
+	      labels: result_label,
 	      datasets: [
 	        {
 	          label: "Drama",
 	          backgroundColor: "#3e95cd",
-	          data: [133,221,783,2478]
+	          data: result_drama
 	        }, {
 	          label: "Comedy",
 	          backgroundColor: "#8e5ea2",
-	          data: [408,547,675,734]
+	          data: result_comedy
 	        },
 	        {
-		          label: "Romance",
-		          backgroundColor: "#8e5ea3",
-		          data: [408,547,675,734]
-		        }
+	          label: "Romance",
+	          backgroundColor: "#8e5ea3",
+	          data: result_romance
+		    }
 	      ]
 	    },
 	    options: {

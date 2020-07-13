@@ -299,7 +299,7 @@ public class Movies {
 								.append("total_qty", 1.0)),
 				new Document().append("$group", new Document().append("_id", "$anno").append("film",
 						new Document().append("$push",
-								new Document().append("genere", "$genere").append("quantit\u00E0", "$total_qty")))),
+								new Document().append("genere", "$genere").append("quantita", "$total_qty")))),
 				new Document().append("$sort", new Document().append("anno", 1.0)));
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}

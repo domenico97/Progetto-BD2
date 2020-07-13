@@ -245,7 +245,7 @@ function showQuery() {
 	var to = $("#inputTo").val();
 	
 	if(from == ''){
-		from = "1900"
+		from = "2005"
 	}
 	if(to == ''){
 		to = "2020"
@@ -285,10 +285,9 @@ function showQuery() {
 				success : function(data) {
 					var count = Object.keys(data).length;
 					
-					for (i = 0; i < count; i++) {
-						if(result_label.indexOf(data[i].anno)=== -1){
-							result_label.push(data[i].anno);
-						}
+					for (i = 0; i < count; i++) 
+							result_label.push(data[i]._id);
+						
 				/*	
 				for (y of result_label){
 					founded_drama = false;
@@ -351,19 +350,20 @@ function showQuery() {
 					
 					for(y of data[i].film)
 					{
-						if(y.genere.localCompare("Drama"))
+						
+						if(y.genere === "Drama")
 						{
 							founded_drama = true;
 							qty_drama = y.quantita;
 						}
 						
-						if(y.genere.localCompare("Comedy"))
+						if(y.genere === "Comedy")
 						{
 							founded_comedy = true;
 							qty_comedy = y.quantita;
 						}
 						
-						if(y.genere.localCompare("Romance"))
+						if(y.genere === "Romance")
 						{
 							founded_romance = true;
 							qty_romance = y.quantita;
@@ -385,7 +385,7 @@ function showQuery() {
 					else
 						result_comedy.push(0);
 				}
-			}
+			
 					
 				
 					
@@ -393,6 +393,7 @@ function showQuery() {
 					return data;
 				}
 			});
+	
 
 	if (typeof myChart !== 'undefined') {
 		myChart.destroy();
@@ -414,7 +415,7 @@ function showQuery() {
 	        },
 	        {
 	          label: "Romance",
-	          backgroundColor: "#8e5ea3",
+	          backgroundColor: "#3a4ea4",
 	          data: result_romance
 		    }
 	      ]
@@ -422,7 +423,7 @@ function showQuery() {
 	    options: {
 	      title: {
 	        display: true,
-	        text: 'Population growth (millions)'
+	        text: 'Distribuzione genere per anno'
 	      }
 	    }
 	});
@@ -466,7 +467,7 @@ function showQuery() {
 			});*/
 	
 	
-	document.getElementById('date').innerHTML = "Dal " + from + " al " + to;
+	/*document.getElementById('date').innerHTML = "Dal " + from + " al " + to;
 	document.getElementById('footer_text').innerHTML = "Il genere per la quale sono stati prodotti più film nel periodo che va dal " + from + " al " + to + " è: " + result_label[0];
 	
 	//Calcolo le percentuali per i 5 generi con più film
@@ -529,7 +530,7 @@ function showQuery() {
 	});
 	
 	
-
+*/
 		    
 	}
 	
@@ -546,7 +547,7 @@ function createTable(result){
 		var total = result[j].total_qty;
 		//console.log(company_name);
 		wrap.innerHTML += '<tr>'
-				+ '<td>' + genere
+				+ '<td>' + result
 				+ '</td>' + '<td>'
 				+ total + '</td>'
 				+ '</tr>';

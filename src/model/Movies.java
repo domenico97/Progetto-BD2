@@ -282,8 +282,8 @@ public class Movies {
 	public static ArrayList<Document> genreDistributionForYear(String from, String to) {
 		List<? extends Bson> pipeline = Arrays.asList(new Document().append("$match", new Document().append("$and",
 				Arrays.asList(new Document()
-						.append("year", new Document().append("$gte", "2000")),
-						new Document().append("year", new Document().append("$lte", "2002"))))),
+						.append("year", new Document().append("$gte", from)),
+						new Document().append("year", new Document().append("$lte", to))))),
 				new Document().append("$addFields", new Document().append("qty", 1.0)),
 				new Document().append("$project",
 						new Document()
@@ -300,7 +300,7 @@ public class Movies {
 				new Document().append("$group", new Document().append("_id", "$anno").append("film",
 						new Document().append("$push",
 								new Document().append("genere", "$genere").append("quantita", "$total_qty")))),
-				new Document().append("$sort", new Document().append("anno", 1.0)));
+				new Document().append("$sort", new Document().append("_id", 1.0)));
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}
 

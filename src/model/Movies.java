@@ -4,6 +4,8 @@ import static com.mongodb.client.model.Aggregates.lookup;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Aggregates.out;
+
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
@@ -36,7 +38,8 @@ public class Movies {
 	private static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017/"));
 	private static MongoDatabase database = mongoClient.getDatabase("BD2");
 	private static MongoCollection<Document> collection = database.getCollection("Movies");
-	private static String indexDirector = collection.createIndex(Indexes.hashed("director"));
+	private static String x = collection.createIndex(Indexes.hashed("director"));
+	private static String y = collection.createIndex(Indexes.ascending("year"));
 
 	// Restituisce una lista di film con i relativi incassi
 	public static ArrayList<Document> getWorldWideGrossIncome(String from, String to) {
@@ -279,11 +282,43 @@ public class Movies {
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}
 
-	public static ArrayList<Document> genreDistributionForYear(String from, String to) {
+	public static ArrayList<Document> distributionMaingGenreForYear(String from, String to) {
 		List<? extends Bson> pipeline = Arrays.asList(new Document().append("$match", new Document().append("$and",
 				Arrays.asList(new Document()
 						.append("year", new Document().append("$gte", from)),
 						new Document().append("year", new Document().append("$lte", to))))),
+				new Document().append("$addFields", new Document().append("qty", 1.0)),
+				new Document().append("$project",
+						new Document()
+								.append("categoria", new Document().append("$split", Arrays.asList("$genre", ", ")))
+								.append("year", 1.0).append("qty", 1.0)),
+				new Document().append("$unwind", "$categoria"),
+				new Document().append("$group",
+						new Document()
+								.append("_id", new Document().append("anno", "$year").append("genere", "$categoria"))
+								.append("total_qty", new Document().append("$sum", "$qty"))),
+				new Document().append("$project",
+						new Document().append("anno", "$_id.anno").append("genere", "$_id.genere").append("_id", 0.0)
+								.append("total_qty", 1.0)),
+				new Document().append("$group",
+						new Document().append("_id", "$anno").append("film",
+								new Document().append("$push",
+										new Document().append("genere", "$genere").append("quantita", "$total_qty")))),
+				new Document().append("$sort", new Document().append("_id", 1.0)));
+		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
+	}
+
+	// Distribuzione di un solo genere
+	public static ArrayList<Document> genreDistributionForYear(String from, String to, String genre) {
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document()
+						.append("$match",
+								new Document().append("$and",
+										Arrays.asList(
+												new Document().append("year", new Document().append("$gte", from)),
+												new Document().append("year", new Document().append("$lte", to)),
+												new Document().append("genre", new BsonRegularExpression(".*"+genre+".*",
+														"i"))))),
 				new Document().append("$addFields", new Document().append("qty", 1.0)),
 				new Document().append("$project",
 						new Document()

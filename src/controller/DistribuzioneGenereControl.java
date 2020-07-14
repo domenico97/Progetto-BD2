@@ -19,14 +19,14 @@ import java.util.Iterator;
 /**
  * Servlet implementation class IncassiFIlm
  */
-@WebServlet("/DistribuzioneFilmPerGenereControl")
-public class DistribuzioneFilmPerGenereControl extends HttpServlet {
+@WebServlet("/DistribuzioneGenereControl")
+public class DistribuzioneGenereControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Movies movies;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DistribuzioneFilmPerGenereControl() {
+    public DistribuzioneGenereControl() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,14 +39,16 @@ public class DistribuzioneFilmPerGenereControl extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		String from = request.getParameter("From");
 		String to = request.getParameter("To");
+		String genre = request.getParameter("Genere");
 		System.out.println(from + " " + to);
 		
 			// Richiamo il metodo del model per eseguire la query
-			ArrayList<Document> result = movies.distributionMaingGenreForYear(from, to);
+			ArrayList<Document> result = movies.genreDistributionForYear(from, to, genre);
 			System.out.println("Dimensione result " + result.size());
 			
 
 			String json = new Gson().toJson(result);
+			System.out.println(json);
 			response.getWriter().print(json);
 		
 	}

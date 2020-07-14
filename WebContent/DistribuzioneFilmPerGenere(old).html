@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" href="assets/img/favicon.ico">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-<title>Numero film per genere</title>
+<title>Distribuzione film per genere</title>
 
 <meta
 	content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
@@ -111,7 +111,7 @@
 					<div class="">
 						<div class="card">
 							<div class="header">
-								<h4 class="title">Numero di film per genere</h4>
+								<h4 class="title">Distribuzione film per genere</h4>
 								<p class="category" id="range"></p>
 								<div class="row, form-inline">
 
@@ -119,15 +119,10 @@
 										<input type="text" placeholder="Da" id="inputFrom"
 											class="form-control" required /> <input type="text"
 											class="form-control" placeholder="A" id="inputTo" required />
-
-										<div style="margin-top: 30px;">
-											Risultati da visualizzare: <input type="number" id="qty"
-												min="1" max="100" placeholder=20>
-
-											<button type="button" class=" btn btn-outline-success"
+                                             <button type="button" class=" btn btn-outline-success"
 												onclick="showQuery()" style="margin-left: 30px;" id="sub">Submit</button>
 
-										</div>
+										
 
 
 
@@ -146,57 +141,7 @@
 
 
 
-					<div class="row">
-						<div class="col-md-6">
-							<div class="card ">
-								<div class="header">
-									<h4 class="title">Generi con più film in %</h4>
-									<p class="category" id="date"></p>
-								</div>
-								<div class="content">
-									<!-- Doughnut Chart  -->
-									<canvas id="chartDoughnut" width="600" max-height="700"></canvas>
-
-								</div>
-								<div class="footer">
-									<hr>
-									<p id="footer_text" class="category" style="padding: 4.5%;"></p>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="card ">
-								<div class="header">
-									<h4 class="title">Riepilogo</h4>
-									<p class="category">Numero di film per ciascuna categoria
-										dal 1900 al 2020</p>
-								</div>
-								<div class="content">
-									<!-- Tabella -->
-									<div class="fresh-table toolbar-color-blue">
-										<div class="toolbar"></div>
-										<table id="fresh-table" class="table">
-											<thead>
-
-												<th data-field="name" data-sortable="true">Genere</th>
-												<th data-field="income" data-sortable="true">Numero di
-													film</th>
-											</thead>
-											<tbody id="wrapper">
-
-											</tbody>
-										</table>
-									</div>
-
-									<div class="footer">
-										<hr>
-
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 
@@ -229,7 +174,7 @@
 <script type="text/javascript">
 window.onload = function() {
 	 showQuery()
-	 createTable(result)
+
 	};
 
 var result = null
@@ -410,12 +355,12 @@ function showQuery() {
 	          data: result_drama
 	        }, {
 	          label: "Comedy",
-	          backgroundColor: "#8e5ea2",
+	          backgroundColor: "#b30000",
 	          data: result_comedy
 	        },
 	        {
 	          label: "Romance",
-	          backgroundColor: "#3a4ea4",
+	          backgroundColor: "#006600",
 	          data: result_romance
 		    }
 	      ]
@@ -534,52 +479,7 @@ function showQuery() {
 		    
 	}
 	
-function createTable(result){
-	//Creo tabella 
-	//Prendo il riferimento al wrapper delle righe
-	
-	var wrap = document
-			.getElementById('wrapper');
 
-	//per ogni attività nella lista creo una riga
-	for ( var j in result) {
-		var genere = result[j].genre;
-		var total = result[j].total_qty;
-		//console.log(company_name);
-		wrap.innerHTML += '<tr>'
-				+ '<td>' + result
-				+ '</td>' + '<td>'
-				+ total + '</td>'
-				+ '</tr>';
-	}
-	
-	
-	 var $table = $('#fresh-table')
-
-	   
-		     $table.bootstrapTable('destroy').bootstrapTable({
-		        classes: 'table table-hover table-striped',
-		        toolbar: '.toolbar',
-		       
-
-		        search: true,
-		        showRefresh: false,
-		        showToggle: false,
-		        showColumns: false,
-		        pagination: true,
-		        striped: true,
-		        sortable: true,												 
-		        pageSize: 4,
-		        pageList: [4, 10, 26],
-
-		        formatShowingRows: function (pageFrom, pageTo, totalRows) {
-		          return ''
-		        },
-		        formatRecordsPerPage: function (pageNumber) {
-		          return pageNumber + ' rows visible'
-		        }
-		      })
-}
 	
 
 	

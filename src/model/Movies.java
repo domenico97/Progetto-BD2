@@ -282,7 +282,7 @@ public class Movies {
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}
 
-	public static ArrayList<Document> distributionMaingGenreForYear(String from, String to) {
+	public static ArrayList<Document> distributionGenresForYear(String from, String to) {
 		List<? extends Bson> pipeline = Arrays.asList(new Document().append("$match", new Document().append("$and",
 				Arrays.asList(new Document()
 						.append("year", new Document().append("$gte", from)),

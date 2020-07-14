@@ -42,7 +42,7 @@ public class DistribuzioneFilmPerGenereControl extends HttpServlet {
 		System.out.println(from + " " + to);
 		
 			// Richiamo il metodo del model per eseguire la query
-			ArrayList<Document> result = movies.distributionMaingGenreForYear(from, to);
+			ArrayList<Document> result = movies.distributionGenresForYear(from, to);
 			System.out.println("Dimensione result " + result.size());
 			
 

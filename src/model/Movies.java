@@ -224,7 +224,7 @@ public class Movies {
 								new Document().append("$substr", Arrays.asList("$worlwide_gross_income", 2.0, -1.0)))),
 				new Document().append("$addFields",
 						new Document().append("worlwide_gross_income",
-								new Document().append("$toInt", "$worlwide_gross_income"))),
+								new Document().append("$toDouble", "$worlwide_gross_income"))),
 				new Document().append("$sort", new Document().append("worlwide_gross_income", -1.0)));
 
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());

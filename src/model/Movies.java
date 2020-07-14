@@ -282,6 +282,7 @@ public class Movies {
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}
 
+	//Distribuzione di tutti i generi
 	public static ArrayList<Document> distributionGenresForYear(String from, String to) {
 		List<? extends Bson> pipeline = Arrays.asList(new Document().append("$match", new Document().append("$and",
 				Arrays.asList(new Document()
@@ -308,7 +309,7 @@ public class Movies {
 		return collection.aggregate(pipeline).allowDiskUse(false).into(new ArrayList<>());
 	}
 
-	// Distribuzione di un solo genere
+	// Distribuzione di un solo genere selezionato dall'utente
 	public static ArrayList<Document> genreDistributionForYear(String from, String to, String genre) {
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document()
